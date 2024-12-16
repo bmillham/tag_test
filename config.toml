@@ -1,0 +1,10 @@
+[types]
+# Valid music file types
+valid = ["flac", "mp3", "ogg", "m4a", "mp3a"]
+
+[directories]
+# DIrectories to scan
+scan = [ "/mnt/Kaled/Music", "/mnt/Kaled/OTRS", "/mnt/Kaled/Jingles"]
+#scan = ["/mnt/Kaled/OTRS"]
+# /mnt/Kaled/Music/3
+# /mnt/Kaled/Music/Soundtracks/b/Beetlejuice Beetlejuice
