@@ -21,8 +21,14 @@ struct TrackInfo {
 
 #[derive(Deserialize)]
 struct Config {
+    general: General,
     types: Types,
     directories: Directories,
+}
+
+#[derive(Deserialize)]
+struct General {
+    verbose: bool,
 }
 
 #[derive(Deserialize)]
@@ -102,11 +108,13 @@ fn scan_dirs(config: &Config, estimate: bool) -> ScanStats {
         {
             if entry.file_type().is_dir() {
                 scan_stats.directories += 1;
-                println!(
-                    "{} Dir: {:?}",
-                    if estimate { "Estimating" } else { "Scanning" },
-                    entry.path().to_string_lossy()
-                );
+                if config.general.verbose {
+                    println!(
+                        "{} Dir: {:?}",
+                        if estimate { "Estimating" } else { "Scanning" },
+                        entry.path().to_string_lossy()
+                    );
+                };
                 continue;
             }
             let f_name = entry.file_name().to_string_lossy();
@@ -118,7 +126,6 @@ fn scan_dirs(config: &Config, estimate: bool) -> ScanStats {
                 .or_insert(1);
 
             if config.types.valid.iter().any(|t| t == &f_ext) {
-                //println!("{:?}", entry.path());
                 if !estimate {
                     let res = read_metadata(&entry.path().to_string_lossy());
                     // Don't print the results just to keep everything simple.
@@ -130,10 +137,12 @@ fn scan_dirs(config: &Config, estimate: bool) -> ScanStats {
                             continue;
                         }
                     };
-                    println!(
-                        "{:?} {:?} {:?} {:?} {:?} {:?}",
-                        t.artist, t.title, t.album, t.genre, t.track, t.duration
-                    );
+                    if config.general.verbose {
+                        println!(
+                            "{:?} {:?} {:?} {:?} {:?} {:?}",
+                            t.artist, t.title, t.album, t.genre, t.track, t.duration
+                        );
+                    }
                 }
                 scan_stats.valid_files += 1;
             } else {
