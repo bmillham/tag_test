@@ -1,7 +1,7 @@
 [general]
 # true = print directory being scanned and the found tags
 # false = only print sumary info
-verbose = true
+verbose = false
 # true = only estimate the number of music files
 # false = estimate and scan the tags
 estimate_only = false
@@ -12,7 +12,8 @@ valid = ["flac", "mp3", "ogg", "m4a", "mp3a"]
 
 [directories]
 # DIrectories to scan
-scan = [ "/mnt/Kaled/Music", "/mnt/Kaled/OTRS", "/mnt/Kaled/Jingles"]
+#scan = [ "/mnt/Kaled/Music", "/mnt/Kaled/OTRS", "/mnt/Kaled/Jingles"]
+scan = ["/mnt/Kaled/Music"]
 #scan = ["/mnt/Kaled/OTRS"]
-# /mnt/Kaled/Music/3
+#scan = ["/mnt/Kaled/Music/j"]
 # /mnt/Kaled/Music/Soundtracks/b/Beetlejuice Beetlejuice

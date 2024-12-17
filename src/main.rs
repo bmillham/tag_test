@@ -132,12 +132,13 @@ fn scan_dirs(config: &Config, estimate: bool) -> ScanStats {
 
             if config.types.valid.iter().any(|t| t == &f_ext) {
                 if !estimate {
-                    let res = read_metadata(&entry.path().to_string_lossy());
-                    // Don't print the results just to keep everything simple.
+                    let full_path = entry.path().to_string_lossy();
+                    let res = read_metadata(&full_path);
+
                     let t = match res {
                         Ok(t) => t,
                         Err(e) => {
-                            println!("Error {}", e);
+                            println!("Error in {}: {}", full_path, e);
                             scan_stats.error_files += 1;
                             continue;
                         }
@@ -193,6 +194,8 @@ fn read_metadata(file_name: &str) -> Result<TrackInfo, LoftyError> {
         None => String::from(""),
     };
 
+    // lofty does not handle track tags like 1/1, so just set the
+    // track to 0 for now
     let t_track = match tag.track() {
         Some(track) => track,
         None => {
