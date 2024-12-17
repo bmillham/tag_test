@@ -29,6 +29,7 @@ struct Config {
 #[derive(Deserialize)]
 struct General {
     verbose: bool,
+    estimate_only: bool,
 }
 
 #[derive(Deserialize)]
@@ -67,6 +68,7 @@ fn main() {
     };
 
     // Estimate files. Mainly for later use when I get a GUI working
+    println!("Estimating files to scan");
     let estimate = scan_dirs(&config, true);
     for key in estimate.found_types.keys().sorted() {
         println!("{:?}: {:?}", key, estimate.found_types[key]);
@@ -76,18 +78,21 @@ fn main() {
         estimate.valid_files, estimate.other_files, estimate.directories
     );
 
-    // Do the real scan
-    let scan_results = scan_dirs(&config, false);
-    for key in scan_results.found_types.keys().sorted() {
-        println!("{:?}: {:?}", key, scan_results.found_types[key]);
+    if !config.general.estimate_only {
+        // Do the real scan
+        println!("Scanning files for tags");
+        let scan_results = scan_dirs(&config, false);
+        for key in scan_results.found_types.keys().sorted() {
+            println!("{:?}: {:?}", key, scan_results.found_types[key]);
+        }
+        println!(
+            "Valid {}, Other: {}, Error: {}, Dirs: {}",
+            scan_results.valid_files,
+            scan_results.other_files,
+            scan_results.error_files,
+            scan_results.directories
+        );
     }
-    println!(
-        "Valid {}, Other: {}, Error: {}, Dirs: {}",
-        scan_results.valid_files,
-        scan_results.other_files,
-        scan_results.error_files,
-        scan_results.directories
-    );
 }
 
 fn scan_dirs(config: &Config, estimate: bool) -> ScanStats {

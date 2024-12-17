@@ -1,7 +1,10 @@
 [general]
 # true = print directory being scanned and the found tags
 # false = only print sumary info
-verbose = false
+verbose = true
+# true = only estimate the number of music files
+# false = estimate and scan the tags
+estimate_only = false
 
 [types]
 # Valid music file types
